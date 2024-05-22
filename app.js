@@ -69,6 +69,20 @@ let studentList = [{
         testScore: []
     },
     {
+        rollNo: 301,
+        name: "Ritu",
+        class: 7,
+        gender: "Female",
+        testScore: []
+    },
+    {
+        rollNo: 302,
+        name: "Rajat",
+        class: 7,
+        gender: "Male",
+        testScore: []
+    },
+    {
         rollNo: 303,
         name: "Santosh",
         class: 7,
@@ -85,20 +99,6 @@ let studentList = [{
     {
         rollNo: 305,
         name: "Chiku",
-        class: 7,
-        gender: "Male",
-        testScore: []
-    },
-    {
-        rollNo: 401,
-        name: "Soumyakant",
-        class: 7,
-        gender: "Male",
-        testScore: []
-    },
-    {
-        rollNo: 402,
-        name: "Suryakant",
         class: 7,
         gender: "Male",
         testScore: []
@@ -228,7 +228,7 @@ function displayingTotalAndPercentageForOption3() {
             for (const key in student) {
                 total += student[key]
             }
-            percentage = Math.floor((total / 300) * 100) + "%";
+            percentage = Math.floor((total / 300) * 100);
             student.total = total;
             student.percentage = percentage;
             console.log(`
@@ -236,12 +236,13 @@ function displayingTotalAndPercentageForOption3() {
 | ${rollNo}   |        ${name}        | ${student.total} | ${student.percentage} |
 +------+--------------------+-------+----------+------------+`);
         })
+        total = 0;
     })
 
 }
 
 function displayMenu() {
-    console.log("1. Take Test\n2. Generate Result\n3. View Students Result\n 4. View Class wise Result");
+    console.log("1. Take Test\n2. Generate Result\n3. View Students Result\n4. View Class wise Result\n5. Detail Anlysis of result");
     const readline = require("readline-sync");
     let input = readline.questionInt();
     return input;
@@ -302,6 +303,16 @@ function GenerateResult() {
     }
 }
 
+function checKingIfNotPresentThenCreate() {
+
+    if (!studentList[0].total) {
+
+        displayingTotalAndPercentageForOption3()
+        console.log("We have successfuly displayed your reults");
+
+    }
+
+}
 
 function storeClassWiseInArray() {
     let class5Arr = []
@@ -344,11 +355,11 @@ option = displayMenu(); //! To get the user input value
 let total = 0;
 let percentage = 0;
 
-// if (option === 1) {
-//     TakeTest();
-//     console.log("Test has taken successfully");
-//     option = displayMenu()
-// }
+if (option === 1) {
+    TakeTest();
+    console.log("Test has taken successfully");
+    option = displayMenu()
+}
 
 if (option === 2) {
     GenerateResult();
@@ -376,6 +387,8 @@ if (option === 3) {
     if (studentList[0].testScore.length == 0) {
         console.log("You have to take test");
         option = displayMenu()
+    } else {
+        checKingIfNotPresentThenCreate()
     }
 
     if (option === 1) {
@@ -383,90 +396,90 @@ if (option === 3) {
         console.log("Test has taken successfully");
         option = displayMenu()
         if (option == 3) {
-            console.log(`
-+------+--------------------+-------+----------+------------+
-| Roll No   |        Name       | Total Marks | Percentage |
-+------+--------------------+-------+----------+------------+`);
-            studentList.map((students) => {
-                let name = students.name;
-                let rollNo = students.rollNo;
-                students.testScore.map((student) => {
-                    for (const key in student) {
-                        total += student[key]
-                    }
-                    percentage = Math.floor((total / 300) * 100) + "%";
-                    student.total = total;
-                    student.percentage = percentage;
-                    console.log(`
-+------+--------------------+-------+----------+------------+
-| ${rollNo}   |        ${name}        | ${student.total} | ${student.percentage} |
-+------+--------------------+-------+----------+------------+`);
-                })
-                total = 0;
-            })
-
+            checKingIfNotPresentThenCreate()
         }
     }
+    // option = displayMenu()
+    // return //? How to exit?
 }
 
-if (option == 4) {  //! UC2
+let classOption;
+let arrOfClasses;
 
-    console.log("Select which class result you want");
-    let classOption = displayClasses();
-    let arrOfClasses = storeClassWiseInArray();
+if (option == 4) {
 
-    switch (classOption) {
-        case 5:
-            displayClassWiseOutput(arrOfClasses, classOption);
-            break;
-        case 6:
-            displayClassWiseOutput(arrOfClasses, classOption);
-            break;
-        case 7:
-            displayClassWiseOutput(arrOfClasses, classOption);
-            break;
-        case 8:
-            displayClassWiseOutput(arrOfClasses, classOption);
-            break;
-        case 9:
-            displayClassWiseOutput(arrOfClasses, classOption);
-            break;
-        case 10:
-            displayClassWiseOutput(arrOfClasses, classOption);
-            break;
-        default:
-            console.log("Enter valid Option Please");
-    }
+    // console.log("Select which class result you want");
+    // classOption = displayClasses();
+    arrOfClasses = storeClassWiseInArray();
+    console.log(arrOfClasses);
+    option = displayMenu();
 
 }
 
-//! For UC3 --> Take test , compute total and percentage
-if (option === 1) {
-    TakeTest();
-    studentList.map((student) => {
-        student.testScore.map((ele) => {
-            for (const key in ele) {
-                total += ele[key];
-            }
-            percentage = Math.floor((total / 300) * 100) + "%";
-            student.total = total;
-            student.percentage = percentage;
+if (option === 5) { //! UC4
+
+    let averageTotalMarks = [];
+    let percentageArr = [];
+    let avgPercentage = 0;
+    let totalPercentageOfEachClass = 0;
+    let allMarks = 0;
+    let average = 0;
+    let count = 0;
+    let classDemo;
+    let grade;
+    let fail = 0;
+    let pass = 0;
+    let failedPercentage = 0;
+    let passsedPercentage = 0;
+
+    console.log(`
++---------+-----------------+-----------------+----------------+-------------+--------------------+---------------------+--------------------
+| Class   |  Total Students | Avg Total Marks | Avg Percentage | Class Grade | Failed Students No | Passed Students No. | Failed Students Percentage | Passed Students Percentage |
++---------+-----------------+-----------------+----------------+-------------+--------------------+---------------------+------------------`);
+
+    arrOfClasses.map((eachClass) => {
+        eachClass.map((classObj) => {
+            classObj.percentage < 35 ? fail++ : pass++;
+            count++;
+            allMarks += classObj.total;
+            totalPercentageOfEachClass += classObj.percentage;
+            classDemo = classObj.class;
+
         })
-        total = 0;
+
+        average = Math.floor(allMarks / count);
+        averageTotalMarks[averageTotalMarks.length] = average;
+        avgPercentage = Math.floor(totalPercentageOfEachClass / count);
+        percentageArr[percentageArr.length] = avgPercentage
+
+        failedPercentage = Math.floor((fail / count) * 100) + "%";
+        passsedPercentage = Math.floor((pass / count) * 100) + "%";
+        if (avgPercentage >= 60) {
+            grade = "A"
+        } else if (avgPercentage < 60 && avgPercentage >= 50) {
+            grade = "B"
+        } else if (avgPercentage < 50 && avgPercentage >= 40) {
+            grade = "C"
+        } else {
+            grade = "F"
+        }
+        // console.log(`${classDemo}  ${average} ${avgPercentage} ${grade} ${pass} ${fail} ${failedPercentage} ${passsedPercentage}`);
+
+        console.log(`
++--------------------------------------------+-------------------------------+-----------------+------ ----------------+---------------+--------------------+
+| ${classDemo}  |  ${count}  |        ${average}        |           ${avgPercentage}             |            ${grade}          |          ${fail}         |         ${pass}     |             ${failedPercentage}          |    ${passsedPercentage}    |
++------------------+--------------------------+------------------------------+----------------+-------------+--------------------+---------------------+-`);
+
+        count = 0; 6
+        fail = 0;
+        pass = 0;
+        failedPercentage = 0;
+        passsedPercentage = 0;
+        allMarks = 0;
+        totalPercentageOfEachClass = 0;
     })
 
-    if (studentList[0].total) {
-        console.log(`
-+------+--------------------+-------+----------+------------+
-| Roll No   |        Name       | Total Marks | Percentage |
-+------+--------------------+-------+----------+------------+`);
-
-        studentList.map(({ rollNo, name, total, percentage }) => {
-            console.log(`
-+------+--------------------+-------+----------+------------+
-| ${rollNo}   |        ${name}       | ${total} | ${percentage} |
-+------+--------------------+-------+----------+------------+`);
-        })
-    }
-    console.log("Test Has Taken And All the results are generated successfully");
+    option = displayMenu();
 }
+
+
