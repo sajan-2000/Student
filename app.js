@@ -482,4 +482,20 @@ if (option === 5) { //! UC4
     option = displayMenu();
 }
 
+//! UC5
+if (option === 6) {
+    let stdCls = 0;
+    arrOfClasses.map((eachClass) => {
+        eachClass.sort((a, b) => {
+            stdCls = a.class;
+            return b.total - a.total;
+        })
+        console.log(`Top 3 Students of ${stdCls}`);
+        for (let i = 0; i < 3; i++) {
+            // console.log(`Class ${eachClass[i].class}`);
+            stdCls = eachClass[i].class
+            console.log(eachClass[i]);
+        }
+    })
 
+}
