@@ -344,11 +344,11 @@ option = displayMenu(); //! To get the user input value
 let total = 0;
 let percentage = 0;
 
-if (option === 1) {
-    TakeTest();
-    console.log("Test has taken successfully");
-    option = displayMenu()
-}
+// if (option === 1) {
+//     TakeTest();
+//     console.log("Test has taken successfully");
+//     option = displayMenu()
+// }
 
 if (option === 2) {
     GenerateResult();
@@ -438,4 +438,35 @@ if (option == 4) {  //! UC2
             console.log("Enter valid Option Please");
     }
 
+}
+
+//! For UC3 --> Take test , compute total and percentage
+if (option === 1) {
+    TakeTest();
+    studentList.map((student) => {
+        student.testScore.map((ele) => {
+            for (const key in ele) {
+                total += ele[key];
+            }
+            percentage = Math.floor((total / 300) * 100) + "%";
+            student.total = total;
+            student.percentage = percentage;
+        })
+        total = 0;
+    })
+
+    if (studentList[0].total) {
+        console.log(`
++------+--------------------+-------+----------+------------+
+| Roll No   |        Name       | Total Marks | Percentage |
++------+--------------------+-------+----------+------------+`);
+
+        studentList.map(({ rollNo, name, total, percentage }) => {
+            console.log(`
++------+--------------------+-------+----------+------------+
+| ${rollNo}   |        ${name}       | ${total} | ${percentage} |
++------+--------------------+-------+----------+------------+`);
+        })
+    }
+    console.log("Test Has Taken And All the results are generated successfully");
 }
